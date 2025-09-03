@@ -14,7 +14,7 @@ export const AuthProvider = ({ children }) => {
     if (exists) return false;
 
     const newUser = { name, password };
-    setUsers({ ...users, newUser });
+    setUsers([...users, newUser]);
     setUser(newUser);
     // console.log(`users:${users}`);
     return true;

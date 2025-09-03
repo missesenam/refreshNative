@@ -14,7 +14,7 @@ const SignUp = () => {
     navigation.navigate("SignIn");
   };
   // handlesubmit
-  const handlesubmit = ({ name, password }) => {
+  const handleSignUpSubmit = ({ name, password }) => {
     const success = signup({ name, password });
     if (!success) {
       alert("User already exists!");
@@ -34,7 +34,7 @@ const SignUp = () => {
         linkPromptText="Already have an account?"
         linkText=" Login"
         handlescreenPress={handlescreenPress}
-        onSubmit={handlesubmit}
+        onSubmit={handleSignUpSubmit}
       />
     </View>
   );

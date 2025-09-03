@@ -1,6 +1,11 @@
 // app/_layout.js
 // in another react native project i'll should keep the layout in the /app root and see if it'll work
 import { Stack } from "expo-router";
+import { AuthProvider } from "../context/AuthContext";
+// <AuthProvider>
+{
+  /* </AuthProvider> */
+}
 
 export default function RootLayout() {
   return (

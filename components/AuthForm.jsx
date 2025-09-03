@@ -35,10 +35,6 @@ const AuthForm = ({
   // if (!fontsLoaded) {
   //   return null; // or <AppLoading /> if you want a loader
   // }
-  //
-  // const [name, setName] = useState("");
-  // const [email, setemail] = useState("");
-  // const [password, setPassword] = useState("");
 
   const handleResgister = (values, { resetForm }) => {
     // console.log(values);
