@@ -5,13 +5,17 @@ import { useNavigation } from "@react-navigation/native";
 import { useAuth } from "../../context/AuthContext";
 
 const SignIn = () => {
-  const { signin } = useAuth();
+  const { login } = useAuth();
 
   const navigation = useNavigation();
-  const handlescreenPress = () => {
+  // navigate to signup screen
+  const handlescreenOne = () => {
     navigation.navigate("SignUp");
   };
-
+  // navigate to reset password screen
+  const handlescreenTwo = () => {
+    navigation.navigate("ResetPassword");
+  };
   // handlesubmit onSubmit
   const handleLoginSubmit = ({ name, password }) => {
     const success = login({ name, password });
@@ -31,8 +35,10 @@ const SignIn = () => {
         passPromptText=" Sign In"
         linkPromptText="don't have an account yet?"
         linkText=" Sign Up"
-        handlescreenPress={handlescreenPress}
+        handlescreenPress={handlescreenOne}
         onSubmit={handleLoginSubmit}
+        handleForgotPassScreen={handlescreenTwo}
+        forgotPassword="Forgot password"
       />
     </View>
   );

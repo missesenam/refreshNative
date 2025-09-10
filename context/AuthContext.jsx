@@ -10,35 +10,46 @@ export const AuthProvider = ({ children }) => {
 
   // signup function
   const signup = ({ name, password }) => {
-    const exists = users.some((u) => u.name === name);
+    const trimmedName = name.trim();
+    const trimmedPassword = password.trim();
+
+    // Check if user exists (case-insensitive)
+    const exists = users.some(
+      (u) => u.name.toLowerCase() === trimmedName.toLowerCase()
+    );
     if (exists) return false;
 
-    const newUser = { name, password };
+    const newUser = { name: trimmedName, password: trimmedPassword };
     setUsers([...users, newUser]);
     setUser(newUser);
-    // console.log(`users:${users}`);
     return true;
   };
+  console.log(users);
 
   // login function
   const login = ({ name, password }) => {
+    const trimmedName = name.trim();
+    const trimmedPassword = password.trim();
+
     const existingUser = users.find(
-      (u) => u.name === name && u.password === password
+      (u) =>
+        u.name.toLowerCase() === trimmedName.toLowerCase() &&
+        u.password === trimmedPassword
     );
     if (!existingUser) return false;
 
     setUser(existingUser);
     return true;
   };
-
   // logout function
   const logout = () => {
     setUser(null);
-    // do navigation back to login
   };
 
   return (
-    <AuthContext.Provider value={{ user, users, signup, login, logout }}>
+    <AuthContext.Provider
+      value={{ user, setUsers, users, signup, login, logout }}
+    >
       {children}
     </AuthContext.Provider>
   );

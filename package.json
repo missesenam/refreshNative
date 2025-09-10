@@ -9,6 +9,7 @@
     "web": "expo start --web"
   },
   "dependencies": {
+    "@expo/vector-icons": "^14.1.0",
     "@hookform/resolvers": "^5.2.1",
     "expo": "~53.0.20",
     "expo-constants": "~17.1.7",

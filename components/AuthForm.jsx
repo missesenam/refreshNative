@@ -5,10 +5,10 @@ import {
   View,
   TouchableOpacity,
 } from "react-native";
-import React, { useState } from "react";
-import { useFonts } from "expo-font";
+import React from "react";
 import * as Yup from "yup";
 import { Formik } from "formik";
+import { Ionicons } from "@expo/vector-icons";
 
 const authSchema = Yup.object().shape({
   name: Yup.string().required("Name is required"),
@@ -25,35 +25,24 @@ const AuthForm = ({
   linkPromptText,
   linkText,
   handlescreenPress,
+  handleForgotPassScreen,
+  forgotPassword,
 }) => {
-  // const [fontsLoaded] = useFonts({
-  //   "Nunito-Regular": require("../assets/fonts/Nunito-Regular.ttf"),
-  //   "EduAUVICWANTPre-Bold": require("../assets/fonts/EduAUVICWANTPre-Bold.ttf"),
-  //   "EduAUVICWANTPre-Regular": require("../assets/fonts/EduAUVICWANTPre-Regular.ttf"),
-  // });
-
-  // if (!fontsLoaded) {
-  //   return null; // or <AppLoading /> if you want a loader
-  // }
-
-  const handleResgister = (values, { resetForm }) => {
-    // console.log(values);
-    onSubmit(values);
-    resetForm(); // clear inputs
-  };
-
   return (
     <View style={styles.container}>
-      {/* top text */}
       <View style={styles.welcomeContainer}>
         <Text style={styles.welcomeTitle}>{welcomeText}</Text>
       </View>
 
-      {/* form cont */}
       <Formik
         initialValues={{ name: "", password: "" }}
         validationSchema={authSchema}
-        onSubmit={handleResgister}
+        onSubmit={(values, { resetForm }) => {
+          const success = onSubmit(values);
+          if (success) {
+            resetForm();
+          }
+        }}
       >
         {({
           handleChange,
@@ -65,46 +54,64 @@ const AuthForm = ({
         }) => (
           <View style={styles.formContainer}>
             <Text style={styles.mainTitle}>{title}</Text>
-            <TextInput
-              style={styles.input}
-              placeholder="enter your name"
-              value={values.name}
-              onChangeText={handleChange("name")}
-              onBlur={handleBlur("name")}
-            />
+
+            {/* Name Input */}
+            <View style={styles.inputContainer}>
+              <Ionicons
+                name="person-outline"
+                size={24}
+                color="gray"
+                style={styles.icon}
+              />
+              <TextInput
+                style={styles.input}
+                placeholder="Enter your name"
+                value={values.name}
+                onChangeText={handleChange("name")}
+                onBlur={handleBlur("name")}
+              />
+            </View>
             {touched.name && errors.name && (
               <Text style={styles.errorText}>{errors.name}</Text>
             )}
-            {/* <TextInput
-          style={styles.input}
-          placeholder="enter your email"
-          value={email}
-          onChangeText={setemail}
-        /> */}
-            <TextInput
-              style={styles.input}
-              placeholder="enter your password"
-              value={values.password}
-              onChangeText={handleChange("password")}
-              onBlur={handleBlur("password")}
-            />
+
+            {/* Password Input */}
+            <View style={styles.inputContainer}>
+              <Ionicons
+                name="lock-closed-outline"
+                size={24}
+                color="gray"
+                style={styles.icon}
+              />
+              <TextInput
+                style={styles.input}
+                placeholder="Enter your password"
+                value={values.password}
+                onChangeText={handleChange("password")}
+                onBlur={handleBlur("password")}
+                secureTextEntry
+              />
+            </View>
             {touched.password && errors.password && (
               <Text style={styles.errorText}>{errors.password}</Text>
             )}
-            {/* submit button */}
+
+            {/* Forgot Password */}
+            {forgotPassword && handleForgotPassScreen && (
+              <Text style={styles.link} onPress={handleForgotPassScreen}>
+                {forgotPassword}
+              </Text>
+            )}
+
+            {/* Submit Button */}
             <TouchableOpacity style={styles.button} onPress={handleSubmit}>
               <Text style={{ textAlign: "center", color: "white" }}>
                 {passPromptText}
               </Text>
             </TouchableOpacity>
-            {/* account signin or signup */}
-            <View
-              style={{
-                flexDirection: "row",
-                marginTop: 30,
-                justifyContent: "center",
-              }}
-            >
+
+            {/* Link to other screen */}
+            <View style={styles.lowerTextContainer}>
               <Text style={styles.lowerText}>
                 {linkPromptText}
                 <Text style={styles.link} onPress={handlescreenPress}>
@@ -115,9 +122,6 @@ const AuthForm = ({
           </View>
         )}
       </Formik>
-      {/* <View>
-        <Text>{forgotPassword}</Text>
-      </View> */}
     </View>
   );
 };
@@ -138,7 +142,6 @@ const styles = StyleSheet.create({
     position: "absolute",
     bottom: 90,
     left: 20,
-    // fontFamily: "EduAUVICWANTPre-Regular",
   },
   formContainer: {
     flex: 6,
@@ -148,25 +151,38 @@ const styles = StyleSheet.create({
     padding: 30,
     marginTop: -40,
   },
-
   mainTitle: {
     color: "black",
     fontWeight: "bold",
     fontSize: 40,
-    marginBottom: 10,
-    // fontFamily: "EduAUVICWANTPre-Bold",
+    marginBottom: 20,
+  },
+  inputContainer: {
+    flexDirection: "row",
+    alignItems: "center",
+    borderBottomWidth: 1,
+    borderColor: "#ccc",
+    marginBottom: 15,
+    paddingVertical: 5,
+  },
+  icon: {
+    marginRight: 10,
   },
   input: {
-    borderBottomWidth: 1,
-    borderColor: "#5a5959ff",
-    padding: 20,
-    marginBottom: 15,
+    flex: 1,
+    fontSize: 16,
+    paddingVertical: 10,
   },
   button: {
     backgroundColor: "purple",
     padding: 15,
     borderRadius: 30,
     marginTop: 30,
+  },
+  lowerTextContainer: {
+    flexDirection: "row",
+    marginTop: 30,
+    justifyContent: "center",
   },
   lowerText: {
     fontSize: 16,
@@ -175,6 +191,7 @@ const styles = StyleSheet.create({
   link: {
     color: "blue",
     fontWeight: "bold",
+    marginLeft: 5,
   },
   errorText: {
     color: "red",
