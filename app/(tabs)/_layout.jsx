@@ -14,7 +14,12 @@ export default function Layout() {
   const navItems = [
     { name: "settings-outline", label: "Settings", route: "Settings" },
     { name: "home-outline", label: "Home", route: "Home" },
-    { name: "bag-outline", label: "Product", route: "Products" },
+    { name: "albums-outline", label: "Dashboard", route: "Dashboard" },
+    {
+      name: "cart-outline",
+      label: "E-Com&FinTech",
+      route: "ComFinTech",
+    },
   ];
 
   const router = useRouter();
@@ -54,7 +59,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "space-between",
     padding: 10,
-    paddingHorizontal: 35,
+    paddingHorizontal: 10,
   },
   iconCont: {
     flexDirection: "column",

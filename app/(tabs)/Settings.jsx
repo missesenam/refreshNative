@@ -4,7 +4,7 @@ import React from "react";
 const settings = () => {
   return (
     <View>
-      <Text style={styles.settingTitle}>Settingjfdjs</Text>
+      <Text style={styles.settingTitle}>Settings</Text>
     </View>
   );
 };

@@ -10,7 +10,7 @@ const SplashScreen = () => {
   useEffect(() => {
     if (!loading) {
       if (user) {
-        router.replace("/Home"); // go to main app
+        router.replace("/Settings"); // go to main app
       } else {
         router.replace("/SignUp"); // go to sign up
       }
