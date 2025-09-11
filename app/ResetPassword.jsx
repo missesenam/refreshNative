@@ -9,7 +9,7 @@ import {
 } from "react-native";
 import { Formik } from "formik";
 import * as Yup from "yup";
-import { useAuth } from "../../context/AuthContext";
+import { useAuth } from "../context/AuthContext";
 import { useNavigation } from "expo-router";
 
 const resetSchema = Yup.object().shape({

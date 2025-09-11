@@ -1,36 +1,30 @@
-import { Image, StyleSheet, Text, View } from "react-native";
-import React, { useEffect, useState } from "react";
-import { ActivityIndicator } from "react-native";
-// import { useNavigation } from "expo-router";
+import { Image, StyleSheet, Text, View, ActivityIndicator } from "react-native";
+import React, { useEffect } from "react";
 import { useRouter } from "expo-router";
+import { useAuth } from "../context/AuthContext";
 
 const SplashScreen = () => {
-  // const navigation = useNavigation();
   const router = useRouter();
-  const [isLoading, setIsLoading] = useState(true);
+  const { loading, user } = useAuth();
 
   useEffect(() => {
-    const timer = setTimeout(() => {
-      setIsLoading(false);
-      router.replace("/SignUp");
-    }, 3000);
+    if (!loading) {
+      if (user) {
+        router.replace("/Home"); // go to main app
+      } else {
+        router.replace("/SignUp"); // go to sign up
+      }
+    }
+  }, [loading, user]);
 
-    return () => {
-      clearTimeout(timer);
-    };
-  }, []);
   return (
     <View style={styles.container}>
-      {isLoading && (
-        <>
-          <Image
-            source={require("../assets/images/hero.png")}
-            style={{ width: 200, height: 200, marginBottom: 30 }}
-          />
-          <ActivityIndicator size="large" />
-          <Text style={styles.title}>Onboarding Authentication</Text>
-        </>
-      )}
+      <Image
+        source={require("../assets/images/hero.png")}
+        style={{ width: 200, height: 200, marginBottom: 30 }}
+      />
+      <ActivityIndicator size="large" color="white" />
+      <Text style={styles.title}>Onboarding Authentication</Text>
     </View>
   );
 };

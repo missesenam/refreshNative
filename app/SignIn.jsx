@@ -1,13 +1,15 @@
-import { StyleSheet, Text, View } from "react-native";
-import React from "react";
-import AuthForm from "../../components/AuthForm";
+import { StyleSheet, View } from "react-native";
+import AuthForm from "../components/AuthForm";
 import { useNavigation } from "@react-navigation/native";
-import { useAuth } from "../../context/AuthContext";
+import { useAuth } from "../context/AuthContext";
+import { useRouter } from "expo-router";
 
 const SignIn = () => {
   const { login } = useAuth();
 
   const navigation = useNavigation();
+  const router = useRouter();
+
   // navigate to signup screen
   const handlescreenOne = () => {
     navigation.navigate("SignUp");
@@ -23,8 +25,8 @@ const SignIn = () => {
       alert("User doesn't exists!");
     } else {
       console.log("Logged in successfully!");
-      // navigate to Profile/Home screen
-      navigation.navigate("Profile");
+      // navigate to (screens)/Profile/Home screen i
+      router.push("/Home");
     }
   };
   return (

@@ -1,17 +1,19 @@
-// app/_layout.js
-// in another react native project i'll should keep the layout in the /app root and see if it'll work
 import { Stack } from "expo-router";
-import { AuthProvider } from "../context/AuthContext";
-// <AuthProvider>
-{
-  /* </AuthProvider> */
-}
+import { SafeAreaView } from "react-native-safe-area-context";
+import { StatusBar } from "expo-status-bar";
+import { AuthProvider } from "../context/AuthContext"; // adjust path if needed
 
-export default function RootLayout() {
+export default function Layout() {
   return (
-    <Stack screenOptions={{ headerShown: false }}>
-      <Stack.Screen name="index" options={{ headerShown: false }} />
-      <Stack.Screen name="(screens)" options={{ headerShown: false }} />
-    </Stack>
+    <AuthProvider>
+      <SafeAreaView style={{ flex: 1 }}>
+        <StatusBar style="auto" />
+        <Stack
+          screenOptions={{
+            headerShown: false,
+          }}
+        />
+      </SafeAreaView>
+    </AuthProvider>
   );
 }

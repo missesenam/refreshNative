@@ -1,4 +1,5 @@
-import React, { createContext, useState, useContext } from "react";
+import React, { createContext, useState, useContext, useEffect } from "react";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 // 1️⃣ Create the context
 const AuthContext = createContext();
@@ -7,9 +8,29 @@ const AuthContext = createContext();
 export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null); // logged-in user
   const [users, setUsers] = useState([]); // all registered users
+  const [loading, setLoading] = useState(true);
+
+  // 🔄 Load saved user on startup
+  useEffect(() => {
+    const loadUser = async () => {
+      try {
+        const storedUser = await AsyncStorage.getItem("user");
+        const storedUsers = await AsyncStorage.getItem("users");
+
+        if (storedUser) setUser(JSON.parse(storedUser));
+        if (storedUsers) setUsers(JSON.parse(storedUsers));
+      } catch (error) {
+        console.error("Error loading user from storage", error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    loadUser();
+  }, []);
 
   // signup function
-  const signup = ({ name, password }) => {
+  const signup = async ({ name, password }) => {
     const trimmedName = name.trim();
     const trimmedPassword = password.trim();
 
@@ -20,14 +41,21 @@ export const AuthProvider = ({ children }) => {
     if (exists) return false;
 
     const newUser = { name: trimmedName, password: trimmedPassword };
-    setUsers([...users, newUser]);
+    const updatedUsers = [...users, newUser];
+
+    setUsers(updatedUsers);
     setUser(newUser);
+
+    // save to storage
+    await AsyncStorage.setItem("users", JSON.stringify(updatedUsers));
+    await AsyncStorage.setItem("user", JSON.stringify(newUser));
+
     return true;
   };
   console.log(users);
 
-  // login function
-  const login = ({ name, password }) => {
+  // login
+  const login = async ({ name, password }) => {
     const trimmedName = name.trim();
     const trimmedPassword = password.trim();
 
@@ -39,16 +67,18 @@ export const AuthProvider = ({ children }) => {
     if (!existingUser) return false;
 
     setUser(existingUser);
+    await AsyncStorage.setItem("user", JSON.stringify(existingUser));
     return true;
   };
-  // logout function
-  const logout = () => {
+  // logout
+  const logout = async () => {
     setUser(null);
+    await AsyncStorage.removeItem("user");
   };
 
   return (
     <AuthContext.Provider
-      value={{ user, setUsers, users, signup, login, logout }}
+      value={{ user, setUsers, users, signup, login, logout, loading }}
     >
       {children}
     </AuthContext.Provider>

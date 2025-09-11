@@ -1,8 +1,10 @@
 import { StyleSheet, Text, View } from "react-native";
 import React, { useState } from "react";
-import AuthForm from "../../components/AuthForm";
+import AuthForm from "../components/AuthForm";
 import { useNavigation } from "@react-navigation/native";
-import { useAuth } from "../../context/AuthContext";
+import { useRouter } from "expo-router";
+
+import { useAuth } from "../context/AuthContext";
 
 const SignUp = () => {
   // using authcontext
@@ -10,6 +12,8 @@ const SignUp = () => {
 
   // navigation to login/signin page
   const navigation = useNavigation();
+  const router = useRouter();
+
   const handlescreenPress = () => {
     navigation.navigate("SignIn");
   };
@@ -21,7 +25,7 @@ const SignUp = () => {
     } else {
       console.log("Signed up and logged in!");
       // navigate to Profile/Home screen
-      navigation.navigate("Profile");
+      router.push("/Home");
     }
   };
 

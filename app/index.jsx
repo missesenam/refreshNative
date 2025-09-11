@@ -3,9 +3,9 @@ import React from "react";
 import SplashScreen from "../components/SplashScreen";
 
 // app/index.jsx (or any screen where you want no header)
-export const options = {
-  headerShown: false,
-};
+// export const options = {
+//   headerShown: false,
+// };
 
 const Index = () => {
   return (
