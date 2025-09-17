@@ -8,22 +8,12 @@ import {
 } from "react-native";
 import React from "react";
 import { useAuth } from "../../context/AuthContext";
-import { useNavigation } from "@react-navigation/native";
+
 import { Ionicons } from "@expo/vector-icons";
 import AuthForm from "../../components/AuthForm";
 
 const Profile = () => {
-  const { user, logout } = useAuth();
-  const navigation = useNavigation();
-
-  const handleLogout = () => {
-    logout();
-    // Reset navigation to go back to SignIn
-    navigation.reset({
-      index: 0,
-      routes: [{ name: "SignIn" }],
-    });
-  };
+  const { user } = useAuth();
 
   return (
     <View style={styles.container}>
@@ -103,10 +93,6 @@ const Profile = () => {
       <TouchableOpacity style={styles.button}>
         <Text style={styles.buttonText}>SAVE</Text>
       </TouchableOpacity>
-
-      {/* <TouchableOpacity style={styles.button} onPress={handleLogout}>
-        <Text style={styles.buttonText}>Logout</Text>
-      </TouchableOpacity> */}
     </View>
   );
 };
